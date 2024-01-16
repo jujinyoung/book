@@ -80,7 +80,72 @@ public int fn(int n) {
     return n;
 }
 ```
-O(n!)는 가장 느린 알고리즘으로 코딩 테스트나 실무에서는 적용하기 어려운 알고리즘이다/
+O(n!)는 가장 느린 알고리즘으로 코딩 테스트나 실무에서는 적용하기 어려운 알고리즘이다.
+* 팩토리얼을 재귀로 구현할 경우 O(n!)이라고 생각할 수 있지만 시간 복잡도는 O(n)이다
+
+### 자바 컬렉션 프레임워크
+#### 리스트 시간 복잡도
+
+|     연산      |  ArrayList   |    LinkedList    |
+|:-----------:|:------------:|:----------------:|
+|  인덱스 끝에 삽입  | O(1) 가끔 O(n) |       O(1)       |
+| 인덱스 중간에 삽입  |     O(n)     | 탐색 O(n), 삽입 O(1) |
+| 인덱스 끝에서 삭제  |     O(1)     |       O(1)       |
+| 인덱스 중간에서 삭제 |     O(n)     | 탐색 O(n), 삭제 O(1) |
+|     조회      |     O(1)     |       O(n)       |
+* ArrayList의 삽입에는 O(1)이지만 공간이 가득찰 경우 더블링이 일어나고 O(n)이 소요된다.
+* ArrayList는 인덱스의 끝에서의 삽입과 조회가 빠르고, LinkedList는 인덱스 중간에서의 삽입과 삭제가 빠르다.
+
+##### LinkedList의 내부 구현
+```
+public boolean add(E e) {
+    ...
+    final Node<E> l = last;
+    final Node<E> newNode = new Node<>(l, e, null);
+    last = newNode;
+    if(l == null) first = newNode;
+    else l.next = newNode;
+    size++;
+    modCount++;
+}
+```
+LinkedList의 add의 경우 별도의 Node를 생성하는 매우 비싼 작업이 수반되기 때문에 속도가 느림
+
+#### 맵 시간 복잡도
+
+| 연산  |   HashMap   | LinkedHashMap |
+|:---:|:-----------:|:-------------:|
+| 추가  |    O(1)     |     O(1)      |
+| 삭제  |    O(1)     |     O(1)      |
+| 조회  |    O(1)     |     O(1)      |
+LinkedHashMap은 HashMap과 사실상 동일 자료형으로 봐도 무방(코틀린은 기본적으로 LinkedHashMap을 사용)
+* LinkedHashMap은 입력 순서를 보장한다.
+
+#### 데크 시간 복잡도
+
+| 연산  | ArrayDeque | LinkedList |
+|:---:|:----------:|:----------:|
+| 삽입  |    O(1)    |    O(1)    |
+| 추출  |    O(1)    |    O(1)    |
+
+데크의 경우 ArrayDeque를 주로 사용 
+* ArrayDeque는 자바에서 스택과 큐를 대체하는 역할 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

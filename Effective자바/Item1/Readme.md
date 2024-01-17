@@ -104,6 +104,50 @@ public class ItemTest {
 * 현재 사용하는 main에서는 **Item1, Item2 클래스의 존재를 몰라도** ItemInterface에서 전달해주는 객체의 print를 수행한다. 
 
 #### 5. 정적 팩터리 메서드를 작성하는 시점에는 반환할 객체의 클래스가 존재하지 않아도 된다.
+```
+private static void printHello() {
+    ServiceLoader<HelloService> loader = ServiceLoader.load(HelloService.class);
+    Optional<HelloService> helloServiceOptional = loader.findFirst();
+    helloServiceOptional.ifPresent(h -> {
+        System.out.println(h.hello());
+    });
+}
+```
+printHello 메서드가 호출되기 전까지 HelloService의 구현체가 존재하지 않는다. 
 ### 단점
 #### 1. 상속을 하려면 public이나 protected 생성자가 필요하니 정적 팩토리 메서드만 제공하면 하위 클래스를 만들 수 없다.
+* 싱글턴의 경우 이 단점에 해당됨. 
+* 생성자를 public으로 열고 정적 팩터리 메서드도 제공하는 경우도 있다.
+* ex) List는 new ArrayList<>() 와 List.of(...) 으로 생성이 가능하다.
+
 #### 2. 정적 팩터리 메서드는 프로그래머가 찾기 어렵다.
+Javadoc에서 설명이 명확히 드러나지 않는다. -> 메서드 이름을 알려진 규악에 따라 짓는 식으로 문제 완화
+
+### 정적 팩터리 메서드의 명명 방식
+* from: 매개변수를 하나 받아서 해당 타입의 인스턴스를 반환하는 형변환 메서드
+> Date d = Date.from(instant);
+* of: 여러 매개변수를 받아 적합한 타입의 인스턴스를 반환하는 집계 메서드
+> Set<<d>Rank> faceCards = EnumSet.of(JACK, QUEEN, KING);
+* valueOf: from과 of의 더 자세한 버전
+> BigInteger prime = BigInteger.valueOf(Integer.MAX_VALUE);
+* instance 혹은 getInstance: (매개변수를 받는다면) 매개변수로 명시한 인스턴스를 반환하지만, 같은 인스턴스임을 보장하지는 않는다.
+> 싱글턴 예시 참조
+* getType: 생성할 클래스가 아닌 다른 클래스에 팩터리 메서드를 정의할 때 쓴다. (Type은 반환할 객체 타입)
+> FileStore fs = Files.getFileStore(path);
+
+등등
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

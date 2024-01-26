@@ -148,3 +148,82 @@ NutritionFacts lombok = NutritionFacts
 > 주의사항<br>
 > 1.모든 파라미터를 가진 기본 생성자도 열리는 문제 =>  access레벨을 private으로 해결<br>
 > 2.필수 필드를 지정할 수 없는 문제
+
+### 계층형 빌더
+```
+public abstract class Pizza {
+    public enum Topping { HAM, MUSHROOM, ONION, PEPPER, SAUSAGE }
+    final Set<Topping> toppings;
+
+    abstract static class Builder<T extends Builder<T>> {
+        EnumSet<Topping> toppings = EnumSet.noneOf(Topping.class);
+        public T addTopping(Topping topping) {
+            toppings.add(Objects.requireNonNull(topping));
+            //self() 메서드로 자식 클래스의 this를 받아옴 -> Builder<T>를 리턴하면 클라이언트에서 사용 시 캐스팅 필요
+            return self();
+        }
+
+        abstract Pizza build();
+
+        protected abstract T self();
+    }
+
+    Pizza(Builder<?> builder) {
+        toppings = builder.toppings.clone();
+    }
+}
+```
+```
+public class NyPizza extends Pizza{
+    public enum Size{ SMALL, MEDIUM, LARGE }
+    private final Size size;
+
+    public static class Builder extends Pizza.Builder<Builder> {
+        private final Size size;
+        
+        private boolean sauceInside = false;    //기본값
+
+        public Builder sauceInside() {
+            sauceInside = true;
+            return this;
+        }
+
+        public Builder(Size size) {
+            this.size = Objects.requireNonNull(size);
+        }
+
+        @Override
+        public NyPizza build() {
+            return new NyPizza(this);
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    }
+
+    NyPizza(Builder builder) {
+        super(builder);
+        size = builder.size;
+    }
+}
+```
+#### 실제 사용
+```
+NyPizza nyPizza = new NyPizza.Builder(SMALL)
+                .addTopping(PEPPER)
+                .addTopping(MUSHROOM)
+                .sauceInside()  //바로 사용
+                .build();
+```
+* Pizza 클래스에서 return을 NyPizza의 self() 로 넘겨줬기 때문에 typeCasting이 불필요
+* 그렇기 때문에 sauceInside를 캐스팅 없이 바로 체이닝방식으로 사용가능
+
+
+
+
+
+
+
+

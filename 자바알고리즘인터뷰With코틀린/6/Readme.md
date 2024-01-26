@@ -68,6 +68,17 @@ public void reverseString(char[] s) {
 }
 ```
 ### 로그 파일 재정렬
+[문제풀이](https://github.com/jujinyoung/CodingTest/blob/master/leetcode/_937.java) <br>
+1. 문자 로그와 숫자 로그를 분리해서 List에 저장
+2. 문자 로그 list를 compartor를 구현해서 순서대로 정렬
+3. 문자가 같을 경우 식별자 비교해서 정렬
+4. 나머지 숫자 로그를 문자 로그에 더해서 출력
+
+**주요 메소드**
+1. list.sort(compartor...) : compartor를 구현해서 정렬 기준 만들기
+2. String.compareTo(String) : 문자의 사전 순으로 비교해서 작으면 -1, 같으면 0, 크면 1 return
+3. list.addAll(List) : 리스트에 전체 add
+4. letter.toArray(new String[0]) : list -> String[]로 반환
 ### 가장 흔한 단어
 ### 그룹 애너그램
 ### 가장 긴 팰린드롬 부분 문자열

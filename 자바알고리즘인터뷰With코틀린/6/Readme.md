@@ -79,6 +79,16 @@ public void reverseString(char[] s) {
 2. String.compareTo(String) : 문자의 사전 순으로 비교해서 작으면 -1, 같으면 0, 크면 1 return
 3. list.addAll(List) : 리스트에 전체 add
 4. letter.toArray(new String[0]) : list -> String[]로 반환
+
 ### 가장 흔한 단어
+[문제풀이](https://github.com/jujinyoung/CodingTest/blob/master/leetcode/_819.java) <br>
+1. ArrayList, HashSet의 contains 시 속도 차이
+* ArrayList는 중복을 허용하고 데이터 접근 시  처음부터 순차적으로 탐색 진행
+* HashSet은 비선형 구조로 순서가 없고 인덱스도 없으므로 데이터를 key상관없이 바로 확인 <br>
+-> List를 사용하거나 Set을 사용하거나 동작에 차이가 없는 상황일 경우 HashSet을 사용
+2. replaceAll("\\W+", " ") : \W+는 한 개 이상의 알파벳 또는 숫자를 의미
+3. Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey()
+* map.entrySet과 Comparator를 넘겨서 Value중 최고값의 key를 가져온다.
+
 ### 그룹 애너그램
 ### 가장 긴 팰린드롬 부분 문자열

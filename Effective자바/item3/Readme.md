@@ -72,7 +72,40 @@ public class Elvis {
     public static Elivis getInstance() { return INSTANCE; }
 }
 ```
+**단점**<br>
+1번예시와 동일함<br>
+
 **장점**<br>
 1. API를 바꾸지 않고도 싱글턴이 아니게 변경할 수 있다.
+* getInstance 호출부에서 INSTANCE를 return 하지 않고 new Elvis()를 리턴하면 다른 인스턴스를 넘길 수 있다.
+
 2. 정적 팩터리를 제너릭 싱글턴 팩터리로 만들 수 있다.
-3. 정저 팩터리의 메서드 참조를 공급자(Supplier)로 사용할 수 있다. 
+```
+public class MetaElvis<T> {
+
+    private static final MetaElvis<Object> INSTANCE = new MetaElvis<>();
+    private MetaElvis() {}
+    public static <T> MetaElvis<T> getInstance() { return (MetaElvis<T>) INSTANCE; }
+
+    public static void main(String[] args) {
+        MetaElvis<String> elvis1 = MetaElvis.getInstance();
+        MetaElvis<Integer> elvis2 = MetaElvis.getInstance();
+        System.out.println(elvis1.equals(elvis2));
+    }
+}
+```
+3. 정적 팩터리의 메서드 참조를 공급자(Supplier)로 사용할 수 있다. 
+```
+Supplier<Elvis> elvisSupplier = Elvis::getInstance;
+```
+* 생성자는 불가능하지만 메서드로 제공하기 때문에 가능
+
+### 3. 열거 타입 방식의 싱글턴 - 바람직한 방법
+```
+public enum Elvis {
+    INSTANCE;
+    
+    public void leaveTheBuilding() {}
+}
+```
+* 기존의 단점인 리플렉션시 생성자를 호출하는 문제, 역직렬화 문제를 모두 해결할 수 있다.

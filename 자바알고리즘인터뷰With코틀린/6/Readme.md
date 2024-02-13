@@ -91,4 +91,14 @@ public void reverseString(char[] s) {
 * map.entrySet과 Comparator를 넘겨서 Value중 최고값의 key를 가져온다.
 
 ### 그룹 애너그램
+[문제풀이](https://github.com/jujinyoung/CodingTest/blob/main/leetcode/_49.java)
+#### 애너그램: 단어의 문자를 재배열하여 다른 뜻을 가지는 다른 단어로 바꾸는 것
+1. 문자를 정렬 후 HashMap에 정렬된 key, 기존 단어를 List로 만들어서 그룹화
+
 ### 가장 긴 팰린드롬 부분 문자열
+[문제풀이](https://github.com/jujinyoung/CodingTest/blob/main/leetcode/_5.java)
+1. 문자를 처음부터 우측으로 한칸씩 이동하면서 양 옆의 문자를 체크해야함 <br>
+ex) "babad" -> 2번째 a체크시 a -> b, b 자릿수 체크 -> 모든 자리수 반복 
+2. 팰린드롬이 짝수인 경우, 0번째 문자열과 1번째 문자열을 시작부터 같이 비교
+3. 팰린드롬이 홀수인 경우, 0번째 문자열과 2번째 문자열을 비교
+> 자릿수를 고려해서 2번 팰린드롬 체크를 해주고 최대 길이의 자릿수를 찾아서 출력해준다.

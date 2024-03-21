@@ -20,7 +20,7 @@
 ### 클래스와 인터페이스를 동시에 상속 받을 경우
 ```
 public class ParentClass {
-    public void hello() {
+    public void hello() {   //private으로 변경 시에도 에러
         System.out.println("Hello from ParentClass");
     }
 }
@@ -38,5 +38,6 @@ public class ChildClass extends ParentClass implements ParentInterface {
     }
 }
 ```
-만약 ParentInterface와 같은 ParentInterface2라는 인터페이스 두개를 상속하게 된다면 hello()를 반드시 재구현 (부모클래스 상속 안받을시)
+* 만약 ParentInterface와 같은 ParentInterface2라는 인터페이스 두개를 상속하게 된다면 hello()를 반드시 재구현 (부모클래스 상속 안받을시)
+* ParentClass의 hello를 private으로 변경할 경우도 클래스가 인터페이스보다 우선한다는 규칙때문에 에러가 발생한다. 
 > 자바의 상속 규칙 중 하나는 <b>클래스가 인터페이스보다 우선한다.</b>

@@ -60,7 +60,7 @@ function a () {
    x = 1;         // 수집 1 할당부분
    console.log(x) // (1)
    console.log(x) // (2)
-   x = 2;
+   x = 2;         // 수집 3 할당부분
    console.log(x) // (3)
 }
 ```

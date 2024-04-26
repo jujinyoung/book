@@ -98,3 +98,81 @@ a();
 (3) 'bbb'
 
 ### 함수 선언문과 함수 표현식
+#### 함수를 선언하는 3가지 방식
+```
+function a () {}  //함수 선언문. 함수명 a가 곧 변수명
+a();  // 실행 ok
+
+var b = function () {}  //(익명) 함수 표현식. 변수명 b가 곧 함수명.
+b();  // 실행 ok
+
+var c = function d () {}   //기명 함수 표현식. 변수명은 c, 함수명은 d.
+c();  // 실행 ok
+d();  // 에러!   -> 외부에서 함수명을 호출할 수 없음
+```
+* 함수 선언문
+  * function 정의부만 존재. 별도의 할당 명령이 없다.
+  * 반드시 함수명이 정의되어야 한다.
+* 함수 표현식
+  * 정의한 function을 별도의 변수에 할당한다.
+  * 함수명이 없어도 된다.
+    * 함수명 정의 O -> 기명 함수 표현식
+    * 함수명 정의 X -> 익명 함수 표현식 (일반적)
+
+#### 함수 선언문과 함수 표현식의 호이스팅 전
+```
+console.log(sum(1,2));
+console.log(multiply(3,4));
+
+function sum(a, b) {             //함수 선언문 sum
+   return a + b;
+}
+
+var multiply = function(a, b) {  //함수 표현식 multiply
+   return a + b;
+}
+```
+#### 호이스팅 후
+```
+var sum = function sum(a, b) {   //함수 선언문은 전체를 호이스팅
+   return a + b;
+};
+var multiply;                    //변수는 선언부만 끌어올림
+
+console.log(sum(1,2));
+console.log(multiply(3,4));
+
+multiply = function(a, b) {      //변수의 할당부는 원래 자리
+   return a + b;
+}
+```
+결과
+> 3 <br>
+> multiply is not a function
+* 만약 동명의 함수를 선언하게 된다면 함수 선언문보다는 함수 표현식이 더 안전하다.
+* 함수 선언문은 선언부 전체가 호이스팅되기 때문에 마지막에 오는 함수가 덮어씌워진다.
+
+### 스코프, 스코프 체인, outerEnvironmentReference
+#### 스코프
+* 식별자에 대한 유효범위
+
+#### 스코프 체인
+* '식별자의 유효범위'를 안에서부터 바깥으로 차례로 검색해나가는 것
+* outerEnvironmentReference가 이를 가능하게 한다.
+  * outerEnvironmentReference는 현재 호출된 함수가 선언될 당시의 LexicalEnvironment를 참조한다.
+
+#### 스코프 체인의 예시
+```
+var a = 1;
+var outer = function() {
+   var inner = function() {
+      console.log(a);   // 호이스팅에 의해 undefined
+      var a = 3;
+   };
+   inner();
+   console.log(a);      // 1
+};
+outer();
+console.log(a);         // 1
+```
+* 변수 은닉화: inner함수 내부에서 a를 선언했기 때문에 전역변수 a에 접근할 수 없음

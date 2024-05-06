@@ -100,4 +100,38 @@ console.log(choco, nabi);
   * Cat { bark: '야옹', name: '나비', age: 5 }
 
 ### 명시적으로 this를 바인딩하는 방법
-...
+#### call(), apply()
+* call 메서드는 호출 주체인 함수를 즉시 실행하도록 명령으로, **첫 번째 인자를 this로 바인딩**하고 이후의 인자들을 호출할 함수의 매개변수로 전달한다.
+* apply 메서드는 call과 동일한 역할을 수행하지만 두 번째 인자를 배열로 받는다.
+* 함수를 그냥 실행하면 this는 전역객체를 참조하지만 call이나 apply를 사용하면 **임의의 객체를 this로 지정**할 수 있다.
+```
+var func = function(a, b, c) {
+  console.log(this, a, b, c);
+}
+
+func(1, 2, 3);  // window 1 2 3
+func.call({x: 1}, 4, 5, 6); // {x: 1} 4 5 6
+func.apply({x: 2}, [4, 5, 6]);  // {x: 2} 4 5 6
+```
+
+#### bind()
+* bind 메서드는 call과 비슷하지만 즉시 호출이 아닌 새로운 함수를 반환한다.
+* 함수에 this를 미리 적용하거나 부분 적용 함수를 구현 시 사용
+* bind를 통해 새로 만든 함수는 name 프로퍼티에 bound라는 접두어가 붙어서 코드 추적이 쉽다.
+
+```
+var func = function(a, b, c, d) {
+  console.log(this, a, b, c, d);
+};
+
+func(1, 2, 3, 4); // window 1 2 3 4
+
+//this 적용
+var bindFuc1 = func.bind({x: 1});
+bindFuc1(5, 6, 7, 8); // {x: 1} 5 6 7 8
+
+//부분 함수 적용
+var bindFunc2 = func.bind({x: 1}, 4, 5);
+bindFunc2(6, 7);  // {x: 1} 4 5 6 7
+bindFunc2(8, 9);  // {x: 1} 4 5 8 9
+```
